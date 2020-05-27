@@ -1,0 +1,29 @@
+{
+  "scripts": {
+    "start": "babel-node --extensions \".ts\" index.ts",
+    "unit-test": "jest",
+    "unit-test:coverage": "jest --coverage && chrome coverage/lcov-report/index.html ",
+    "unit-test:watch": "jest --watchAll",
+    "e2e-test": "testcafe chrome test1.ts",
+    "bdd-test": "gherkin-testcafe chrome bdd/**/*.js bdd/**/*.feature",
+    "type-check": "tsc --noEmit",
+    "qa": "yarn type-check && yarn unit-test && yarn bdd-test"
+  },
+  "dependencies": {
+    "@babel/core": "^7.10.0",
+    "@babel/node": "^7.8.7",
+    "@babel/preset-env": "^7.9.6",
+    "@babel/preset-typescript": "^7.9.0",
+    "@types/express": "^4.17.6",
+    "@types/jest": "^25.2.3",
+    "babel-jest": "^26.0.1",
+    "cowsay": "^1.4.0",
+    "cucumber": "^6.0.5",
+    "express": "latest",
+    "gherkin-testcafe": "^2.5.0",
+    "jest": "^26.0.1",
+    "testcafe": "^1.8.5",
+    "text2png": "^2.3.0",
+    "typescript": "^3.9.3"
+  }
+}
