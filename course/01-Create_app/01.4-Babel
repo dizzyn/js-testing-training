@@ -1,0 +1,64 @@
+# 1a. Add the Babel transpiller
+
+Now we have a nice single file app. That is called `spagetti code`. So we want to split the code in more files. What about to put all routes into files for start?
+
+1. Create folder `routes` and put there 2 new files with routes alone
+
+```Javascript
+export default function api(req, res) {
+  // ...
+}
+```
+
+2. Import the new files in the `index.js` and use the routes in the `Express` webserver
+
+```Javascript
+import page from "./routes/page";
+import api from "./routes/api";
+
+// ...
+
+app.get("/", page);
+app.get("/api", api);
+```
+
+But there is a small trouble. We run our code in the `Node.js` interpret and it needs little bit rare format of file imports by default. Just try to run your app and node will probably compain that there is `unexpected code`. Node requires import syntax called `commonJs imports`:
+
+```Javascript
+module.export = function() {} // for export
+const api = require("./api.js") // for import
+```
+
+So we can rewrite our app or translate it for the `node`. It is quite usual in the world of javascript to translate sources. There are some reasons:
+
+- To use new features of the language before they are widely supported
+- To manage code compatibility with the target platform (our case)
+- To use different languages compiled into the javascript (e. g. Typescript)
+
+Ladies and gentlemen there is the `Babel` - the most versatile javascript-to-javascript translator (the world is `transpiler`). With that we can simple pick language features like in a candy store.
+
+1. Install Babel
+   `yarn install @babel/core @babel/preset-env @babel/node`
+2. Configure that
+```json
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "node": "current"
+        }
+      }
+    ],
+  ]
+}
+
+```
+3. Run it
+
+```
+    "start": "babel-node index",
+```
+
+

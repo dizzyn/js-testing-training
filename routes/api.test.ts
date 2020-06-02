@@ -1,4 +1,4 @@
-import api, { uppercase, asciiart } from "./api";
+import api, { uppercase, cow, image } from "./api";
 import { Request, Response } from "express";
 
 it("uppercase", () => {
@@ -6,47 +6,42 @@ it("uppercase", () => {
   expect(uppercase("a")).toBe("A");
 });
 
-it("asciiart", () => {
-  expect(asciiart("A")).toMatchSnapshot();
+it("cow", () => {
+  expect(cow("A")).toMatchSnapshot();
 });
 
-const request = { query: {} } as Request;
-const response = ({
-  status: jest.fn(),
-  send: jest.fn(),
-} as any) as Response;
+function testAPI(params: any, status?: number) {
+  const req = {
+    query: { ...params },
+  } as any;
 
-function testHandler(query: any, status?: number) {
-  jest.resetAllMocks();
-  request.query = query;
-  api(request, response);
+  const res = {
+    status: jest.fn(),
+    send: jest.fn(),
+  } as any;
+
+  api(req, res);
+
   if (status) {
-    expect(response.status).toBeCalledWith(status);
+    expect(res.status).toBeCalledWith(status);
   }
 
-  // @ts-ignore
-  return response.send.mock.calls[0][0] as any;
+  return res.send.mock.calls[0][0];
 }
 
 it("Missing parameters", () => {
-  expect(testHandler({}, 400)).toBe("str not given");
-  expect(testHandler({ str: "x" }, 400)).toBe("format not given");
-  expect(testHandler({ str: "x", format: "string" }, 400)).toBe(
-    "action not given"
-  );
-  expect(testHandler({ str: "x", action: "ascii" }, 400)).toBe(
-    "format not given"
-  );
+  expect(testAPI({}, 400)).toBe("str not given");
+  expect(testAPI({ str: "x" }, 400)).toBe("action not given");
 });
 
-it.only("Uppercase", () => {
-  expect(testHandler({ str: "a", action: "uppercase", format: "string" })).toBe(
-    "A"
-  );
+it("Call uppercase", () => {
+  expect(testAPI({ str: "a", action: "uppercase" })).toBe("A");
 });
 
-it.only("Ascii", () => {
-  expect(
-    testHandler({ str: "a", action: "asciiart", format: "string" })
-  ).toBeDefined();
+it("Call cow", () => {
+  expect(testAPI({ str: "a", action: "cow" })).toEqual(cow("a"));
+});
+
+it("Call unknown action", () => {
+  expect(testAPI({ str: "x", action: "??" }, 400)).toBe("Unknown action '??'");
 });

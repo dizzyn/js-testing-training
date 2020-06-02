@@ -1,0 +1,99 @@
+# 1.1 Backend
+
+> Lets make some bugs in our demonstrational application. We will ceate set of various API handlers (that is what backend usually looks)
+
+## 1. Create routes
+
+functions - fragments
+
+```javascript
+function api(req, res) {
+  res.send("API handler");
+}
+
+app.get("/api", api);
+```
+
+Now you can call `sa` or `as` for api handler.
+
+## 2. Business logic
+
+Lets create two core functions of our app both will be text transformations. The first one 'uppercase' will simple make the givent text uppercase and second 'cow' create nice ASCII art image with a cow. Both functions will be accesible by the API so we asume to have the URL schema like this:
+
+- `https://localhost/api?action=uppercase&str=Apple` - returns 'APPLE' as a plain text
+- `https://localhost/api?action=cow&str=Apple` - returns the cow saying "Apple", also plain text
+
+> As you see URL contains optional parametters after the `?` and they are split by the `&`
+
+## 2. The Uppercase handler
+
+We should read parameters from request
+
+```javascript
+function uppercase(str) {
+  return str.toUpperCase();
+}
+
+function api(req, res) {
+  const action = req.query.action;
+  const str = req.query.str;
+
+  if (action === "uppercase") {
+    res.send(uppercase(str));
+  }
+}
+
+app.get("/api", api);
+```
+
+Q: Why it is necessary to restart the server with every change and then restart browser?
+
+## 2. The Cow handler
+
+ANd we can do the same for the cow. But we don want to write the cow by ourselves (did we?) so there are NPM packages for everything try to google it. I have found the library called `cow` doing exactly what we want. So install it `yarn add cow`, require and then use:
+
+```javascript
+const cowsay = require("cowsay");
+
+function cow(str) {
+  return cowsay.say({
+    text: str,
+  });
+}
+
+function api(req, res) {
+  const action = req.query.action;
+  const str = req.query.str;
+
+  if (action === "uppercase") {
+    res.send(uppercase(str));
+  } else if (action === "cow") {
+    res.send(cow(str));
+  }
+}
+```
+
+## 2. Error handeling
+
+```
+  if (!str) {
+    res.status(400);
+    res.send(`str not given`);
+    return;
+  }
+```
+
+```
+  if (action === "uppercase") {
+    res.send(uppercase(str));
+  } else if (action === "cow") {
+    res.send(cow(str));
+  } else {
+    res.status(400);
+    res.send(`str not given`);
+  }
+```
+
+## 2. Error handeling
+
+Q. Why we have http error codes (400) if there is also the text explanatory message?

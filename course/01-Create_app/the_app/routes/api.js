@@ -1,26 +1,18 @@
-import { Request, Response } from "express";
-// @ts-ignore
 import cowsay from "cowsay";
-// @ts-ignore
-import text2png from "text2png";
 
-export function uppercase(str: string) {
+export function uppercase(str) {
   return String(str).toUpperCase();
 }
 
-export function cow(str: string) {
+export function cow(str) {
   return cowsay.say({
     text: str,
   });
 }
 
-export function image(str: string) {
-  return text2png(cow(str), { color: "white" });
-}
-
-export default function api(req: Request, res: Response) {
+export default function api(req, res) {
   const action = req.query.action;
-  const str = req.query.str as string;
+  const str = req.query.str;
 
   if (!str) {
     res.status(400);
@@ -38,9 +30,6 @@ export default function api(req: Request, res: Response) {
     res.send(uppercase(str));
   } else if (action === "cow") {
     res.send(cow(str));
-  } else if (action === "image") {
-    res.set("Content-Type", "image/png");
-    res.send(image(str));
   } else {
     res.status(400);
     res.send(`Unknown action '${action}'`);

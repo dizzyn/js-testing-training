@@ -1,0 +1,43 @@
+<html>
+  <body>
+    <style>
+      body {
+        background: black;
+        color: white;
+      }
+    </style>
+    <input id="input" />
+    <button onclick="onSubmit('uppercase')" data-testid="btn-uppercase">
+      Uppercase
+    </button>
+    <button onclick="onSubmit('cow')" data-testid="btn-cow">Cow</button>
+    <button onclick="showImage()" data-testid="btn-image">Image</button>
+    <pre id="output"></pre>
+    <script>
+      const input = document.querySelector("#input");
+      const output = document.querySelector("#output");
+
+      function showImage() {
+        var el = document.createElement("IMG");
+        el.src = "/api?str=" + (input.value || "") + "&action=image";
+        output.innerHTML = "";
+
+        output.append(el);
+      }
+
+      function onSubmit(action) {
+        fetch("/api?str=" + (input.value || "") + "&action=" + action).then(
+          (res) => {
+            res.text().then((text) => {
+              var el = document.createElement("PRE");
+              el.innerHTML = text;
+              output.innerHTML = "";
+
+              output.append(el);
+            });
+          }
+        );
+      }
+    </script>
+  </body>
+</html>

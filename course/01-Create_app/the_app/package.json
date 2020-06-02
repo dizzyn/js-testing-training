@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "start": "babel-node index"
+  },
+  "dependencies": {
+    "@babel/core": "^7.10.0",
+    "@babel/node": "^7.8.7",
+    "@babel/preset-env": "^7.9.6",
+    "cowsay": "^1.4.0",
+    "express": "latest"
+  }
+}

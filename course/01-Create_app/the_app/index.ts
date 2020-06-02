@@ -1,4 +1,3 @@
-// @ts-ignore
 import express from "express";
 import page from "./routes/page";
 import api from "./routes/api";

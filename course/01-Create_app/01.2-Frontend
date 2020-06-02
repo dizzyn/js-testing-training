@@ -1,0 +1,21 @@
+# 1.2 Frontend
+
+> Lets make some more bugs. We have a backend that can serve us by two simple services - the uppercase and the cow. So let users interact with that by some fancy interface.
+
+## 1. Create page
+
+redo hello word to page
+
+## 1. Call API
+
+promise
+
+## 1. Reshape files
+
+file read
+
+Q: Why it is no longer necessary to restart the server with every change in the `HTML` file?
+
+## 1. Create the interface
+
+The interface

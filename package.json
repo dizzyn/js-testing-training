@@ -2,9 +2,9 @@
   "scripts": {
     "start": "babel-node --extensions \".ts\" index.ts",
     "unit-test": "jest",
-    "unit-test:coverage": "jest --coverage && chrome coverage/lcov-report/index.html ",
+    "unit-test:coverage": "jest --coverage --collectCoverageFrom=**/*.ts",
     "unit-test:watch": "jest --watchAll",
-    "e2e-test": "testcafe chrome test1.ts",
+    "e2e-test": "testcafe chrome e2e/*.ts",
     "bdd-test": "gherkin-testcafe chrome bdd/**/*.js bdd/**/*.feature",
     "type-check": "tsc --noEmit",
     "qa": "yarn type-check && yarn unit-test && yarn bdd-test"
@@ -25,5 +25,6 @@
     "testcafe": "^1.8.5",
     "text2png": "^2.3.0",
     "typescript": "^3.9.3"
-  }
+  },
+  "jest": {}
 }
